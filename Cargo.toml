@@ -1,0 +1,12 @@
+[package]
+name = "timed-tests"
+version = "0.1.0"
+edition = "2021"
+# path = "src/lib.rs"
+
+[workspace]
+members = ["macros"]
+
+[dependencies]
+macros = {path = "macros"}
+
