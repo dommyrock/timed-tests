@@ -1,5 +1,6 @@
 use macros::timed;
 
+//Used only for docs / Not actually needed (we parse Time variants as path in proc macro handler)
 pub enum Time {
     Second,
     Mili,
@@ -27,7 +28,7 @@ fn t1() {
 
 
 #[test]
-#[timed(Time::Micro)]
+#[timed("Micro")]
 fn t2() {
     let mut a: Vec<i32> = vec![1, 2, 3, 0, 0, 0];
     let b: Vec<i32> = vec![2, 5, 6];
@@ -60,5 +61,3 @@ fn t3_stack() {
     a.sort();
     assert_eq!(a, [1, 2, 2, 3, 5, 6]);
 }
-
-//ADD CRITERION TO GROUP ALL THE TESTS IN CURRENT FILE INTO GROUP ... 
