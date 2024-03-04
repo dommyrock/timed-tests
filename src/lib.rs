@@ -7,7 +7,7 @@ pub enum Time {
     Nano,
 }
 
-#[timed(Time::Nano)]
+#[timed(Time::Micro)]
 #[test]
 fn t1() {
     let mut a: Vec<i32> = vec![1, 2, 3, 0, 0, 0];
@@ -27,7 +27,7 @@ fn t1() {
 
 
 #[test]
-#[timed(Time::Nano)]
+#[timed(Time::Micro)]
 fn t2() {
     let mut a: Vec<i32> = vec![1, 2, 3, 0, 0, 0];
     let b: Vec<i32> = vec![2, 5, 6];
@@ -41,6 +41,23 @@ fn t2() {
     }
 
     a.sort_unstable();
+    assert_eq!(a, [1, 2, 2, 3, 5, 6]);
+}
+
+#[test]
+#[timed(Time::Nano)]
+fn t3_stack() {
+    let mut a: [i32; 6] = [1, 2, 3, 0, 0, 0];
+    let b: [i32; 3] = [2, 5, 6];
+
+    let start_idx = a.len() - b.len();
+
+    for i in 0..b.len() {
+        unsafe {
+            *a.get_unchecked_mut(start_idx + i) = *b.get_unchecked(i);
+        }
+    }
+    a.sort();
     assert_eq!(a, [1, 2, 2, 3, 5, 6]);
 }
 

@@ -101,17 +101,54 @@ fn t1() {
     let elapsed = start.elapsed();
     {
         ::std::io::_print(
-            format_args!(
-                "Time elapsed: {0:.2} {1}",
-                elapsed.as_secs_f32() * 1_000_000.0,
-                "µs (microseconds) | ",
+            format_args!("Time elapsed: {0:.2} {1}",elapsed.as_secs_f32() * 1_000_000.0,"µs (microseconds) | ",
             ),
         );
     };
     {
+        ::std::io::_print(format_args!("{0} {1:?}\n", elapsed.as_nanos(), "nanoseconds"),);
+    };
+    result
+}
+```
+
+### Expanded "t3_stack" test (stack alocated vec for faster access)
+```rust
+fn t3_stack() {
+    let start = std::time::Instant::now();
+    let result = {
+        let mut a: [i32; 6] = [1, 2, 3, 0, 0, 0];
+        let b: [i32; 3] = [2, 5, 6];
+        let start_idx = a.len() - b.len();
+        for i in 0..b.len() {
+            unsafe {
+                *a.get_unchecked_mut(start_idx + i) = *b.get_unchecked(i);
+            }
+        }
+        a.sort();
+        match (&a, &[1, 2, 2, 3, 5, 6]) {
+            (left_val, right_val) => {
+                if !(*left_val == *right_val) {
+                    let kind = ::core::panicking::AssertKind::Eq;
+                    ::core::panicking::assert_failed(
+                        kind,
+                        &*left_val,
+                        &*right_val,
+                        ::core::option::Option::None,
+                    );
+                }
+            }
+        };
+    };
+    let elapsed = start.elapsed();
+    {
         ::std::io::_print(
-            format_args!("{0} {1:?}\n", elapsed.as_nanos(), "nanoseconds"),
+            format_args!("Time elapsed: {0:.2} {1}",elapsed.as_secs_f32() * 1_000_000.0,"µs (microseconds) | ",
+            ),
         );
+    };
+    {
+        ::std::io::_print(format_args!("{0} {1:?}\n", elapsed.as_micros(), "microseconds"),);
     };
     result
 }
