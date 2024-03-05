@@ -9,4 +9,5 @@ members = ["macros"]
 
 [dependencies]
 macros = {path = "macros"}
+rand = "0.8.5"
 
