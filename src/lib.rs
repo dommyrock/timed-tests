@@ -1,7 +1,8 @@
-use std::collections::{BTreeMap, HashMap, HashSet};
-
-use macros::timed;
+#[allow(unused_imports)]
 use rand::Rng;
+#[allow(unused_imports)]
+use std::collections::{BTreeMap, HashMap, HashSet};
+use macros::timed;
 
 //Used only for docs / Not actually needed (we parse Time variants as path in proc macro handler)
 pub enum Time {

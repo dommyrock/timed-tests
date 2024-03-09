@@ -48,6 +48,7 @@ pub fn timed(args: TokenStream, input: TokenStream) -> TokenStream {
     // Modify the function
     let code_block = &function.block;
     function.block = syn::parse_quote!({
+        use pretty_assertions::assert_eq;
         let start = std::time::Instant::now();
         let result = #code_block;
         let elapsed = start.elapsed();
